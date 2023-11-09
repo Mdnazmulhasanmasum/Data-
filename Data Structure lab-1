@@ -1,0 +1,149 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int Length(char *str)
+{
+    int i = 0;
+    while(str[i])
+        i++;
+    return i;
+}
+char *SubString(char *str, int index, int nofc)
+{
+    int i;
+    char *ss = (char *)malloc(nofc);
+    for(i=0;i<nofc;i++)
+        ss[i] = str[i+index];
+    ss[i] = '\0';
+    return ss;
+}
+
+int Index(char *T,char *P)
+{
+    int index; int s = Length(T); int r = Length(P); int l;
+    int k = 0;
+    int max = s - r + 1;
+    while(k < max)
+    {
+        for(l=0;l<r;l++)
+        {
+            if(P[l] != T[k+l])
+                goto s5;
+        }
+        index = k; return index;
+    s5: k++;
+    }
+    index = -1; return index;
+}
+
+int Compare(char *str1, char *str2)
+{
+    int i, flag = 1;
+    if(Length(str1) != Length(str2))
+        flag = 0;
+    else
+    {
+        i = 0;
+        while(str1[i])
+        {
+            if(str1[i] != str2[i])
+                flag = 0;
+            i++;
+        }
+    }
+    return flag;
+}
+char *Concatenation(char *str1, char *str2)
+{
+    int i;
+    char *con = (char *)malloc(Length(str1)+Length(str2));
+    for(i = 0; i<Length(str1) ; i++)
+        con[i] = str1[i];
+    for(i = 0; i<= Length(str2); i++)
+        con[Length(str1)+i] = str2[i];
+    return con;
+}
+
+char *Insert(char *str1, int index, char *str2)
+{
+    return Concatenation(Concatenation(SubString(str1,0,4),str2) , SubString(str1,4,Length(str1)-index));
+}
+
+
+void main()
+{
+    int in,nofc;
+    char op;
+    char str1[100],str2[100];
+    while(1)
+    {
+        printf("\n1. input a String\n");
+        printf("2. Length of the String\n");
+        printf("3. SubString\n");
+        printf("4. Compare\n");
+        printf("5. Concatenation\n");
+        printf("6. Indexing\n");
+        printf("7. Inserting\n");
+        printf("0. Exit\n");
+        printf("Enter Your Choice : ");
+        op = getche();
+        srand(time(NULL));
+        switch(op)
+        {
+            case '1':
+                printf("\nInput a line of text\n");
+                gets(str1);
+            break;
+            case '2':
+                printf("\nString length is %d\n",Length(str1));
+                break;
+            case '3':
+                printf("\nEnter index of the the Sting : ");
+                scanf("%d",&in);
+                printf("\nEnter no of characters: ");
+                scanf("%d",&nofc);
+
+                puts(SubString(str1,in,nofc));
+            break;
+            case '4':
+                printf("\nEnter a string\n");
+                gets(str1);
+                printf("Enter another string\n");
+                gets(str2);
+                if(Compare(str1,str2))
+                    printf("\nThe both strings are same\n");
+                else
+                    printf("\nStrings are Not Same\n");
+            break;
+            case '5':
+                printf("\nEnter a string\n");
+                gets(str1);
+                printf("Enter another string\n");
+                gets(str2);
+                printf("\nThe concatenated string is \n");
+                puts(Concatenation(str1,str2));
+            break;
+            case '6':
+                printf("\nEnter a string\n");
+                gets(str1);
+                printf("Enter another string\n");
+                gets(str2);
+
+                printf("\nIndex of %d\n",Index(str1,str2));
+                break;
+            case '7':
+                printf("\nEnter a string\n");
+                gets(str1);
+                printf("Enter another string to inser\n");
+                gets(str2);
+                printf("\nEnter location to insert : ");
+                scanf("%d",&in);
+                printf("\nThe inserted string is\n");
+                puts(Insert(str1,in,str2));
+                break;
+            case '0':
+                exit(0);
+            break;
+        }
+    }
+}
